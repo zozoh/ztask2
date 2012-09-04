@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<doc title="zTask 手册" author="zozoh(zozohtnt@gmail.com)">
+    <doc path="ui" title="界面">
+        <doc path="ui_project.zdoc"/>
+        <doc path="ui_usr.zdoc"/>
+        <doc path="ui_tasks.zdoc"/>
+    </doc>
+    <doc path="rules" title="关于编码的军规">
+        <doc path="rule_js.zdoc"/>
+    </doc>
+</doc>
