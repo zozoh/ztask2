@@ -1,0 +1,26 @@
+搭建项目脚手架代码
+    
+用户
+    注册登录
+        SignupModule: login, logout, regiest, exists ...
+        login.jsp | js | css
+        regiester.jsp | js | css
+    用户管理
+        UserModule.jsp
+        jquery.usr
+
+管理
+    GodModule
+    用户
+        UserGodModule
+        god_usr.jsp
+    项目
+        ProjectGodModule
+        god_project.jsp
+    任务
+        TaskGodModule
+        god_task.jsp
+项目
+
+任务
+
