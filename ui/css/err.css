@@ -1,0 +1,29 @@
+body {
+    background-color:#E00;
+}
+
+pre {
+    background-color:#FFF;
+    border-radius: 8px;
+    font-size: 12px;
+    color: #F00;
+    padding: 20px;
+    border:1px solid #DDD;
+}
+
+h3 {
+    font-size:24px;
+    margin-top:10px;
+    padding:10px;
+}
+
+h3 b {
+    color:#FFF;
+    text-shadow: 1px 1px 4px #666;
+}
+
+h3 em {
+    color:#FF0;
+    font-style:normal;
+    margin-left: 20px;
+}

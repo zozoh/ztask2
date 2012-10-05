@@ -5,7 +5,10 @@
         <doc path="ui_usr.zdoc"/>
         <doc path="ui_tasks.zdoc"/>
     </doc>
-    <doc path="rules" title="关于编码的军规">
+    <doc path="develop" title="开发者">
         <doc path="rule_js.zdoc"/>
+        <doc path="about_ui.zdoc"/>
+        <doc path="uis" title="UI控件">
+        </doc>
     </doc>
 </doc>
