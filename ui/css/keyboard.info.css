@@ -1,0 +1,27 @@
+.keyboard-info {
+	list-style: none;
+	padding:4px 10px;
+	margin: 0;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+}
+
+.keyboard-info li {
+	float:left;
+	margin:0 6px;
+	color:#CCC;
+	visibility: hidden;
+}
+
+.keyboard-on-ctrl .keyboard-info-ctrl {
+	visibility: visible;
+}
+
+.keyboard-on-shift .keyboard-info-shift {
+	visibility: visible;
+}
+
+.keyboard-on-alt .keyboard-info-alt {
+	visibility: visible;
+}

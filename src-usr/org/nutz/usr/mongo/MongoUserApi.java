@@ -193,11 +193,20 @@ public class MongoUserApi implements UserApi {
 
     @Override
     public void setValue(User u, String fnm, Object val) {
-        String sVal = null == val ? null : val.toString();
-        u.setValue(fnm, sVal);
-        dao.updateBy(User.CO_NM,
-                     Moo.NEW(User.COF_LNM, u.getLoginName()),
-                     Moo.SET(User.COF_VALS + "." + fnm, sVal));
+        // 删除
+        if (null == val) {
+            dao.updateBy(User.CO_NM,
+                         Moo.NEW(User.COF_LNM, u.getLoginName()),
+                         Moo.NEW().unset(User.COF_VALS + "." + fnm));
+        }
+        // 更新
+        else {
+            String sVal = val.toString();
+            u.setValue(fnm, sVal);
+            dao.updateBy(User.CO_NM,
+                         Moo.NEW(User.COF_LNM, u.getLoginName()),
+                         Moo.SET(User.COF_VALS + "." + fnm, sVal));
+        }
     }
 
     @Override

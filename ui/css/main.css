@@ -1,29 +1,3 @@
-/*---------------------------------------------------------- 全局设定 ------*/
-* {
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-}
-
-body, td, th, font, p {
-    font-size: 12px;
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-body {
-    margin: 0;
-    overflow: hidden;
-}
-
-.clr,  .cfloat:after{
-    content: "";
-    display: block;
-    clear: both;
-    visibility: hidden;
-    line-height: 0;
-    height: 0;
-}
-
 /*-------------------------------------------------------- #sky 区域 ----*/
 #sky {
 	height:40px;
@@ -109,7 +83,7 @@ body {
 }
 
 /*---------------------------------------------------------- 禁止选择 ------*/
-#sky, .menu .task_menu, .task_labels, .disselect {
+#sky, .menu .task_menu, .task_labels{
     -moz-user-select: none;
     -khtml-user-select: none;
     -webkit-user-select: none;

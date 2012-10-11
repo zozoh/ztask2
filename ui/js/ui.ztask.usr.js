@@ -9,6 +9,9 @@ ui("ztask.usr", {
 	dft_option : {
 		data : function(callback){
 			return {
+				"::u.me.profile" : function(bind){
+					ui("usr.profile").bind(bind, "arena");
+				},
 				"::u.me.avata"   : function(bind){
 					ui("avatas").bind(bind, "arena", {
 						sizes: ["128x128", "64x64", "32x32"],
@@ -16,8 +19,10 @@ ui("ztask.usr", {
 						nm   : $z.ui.myName()
 					});
 				},
-				"::u.me.general" : function(bind){
-					ui("usr.general").bind(bind, "arena");
+				"::u.me.chgpwd"  : function(bind){
+					ui("usr.pwd").bind(bind, "arena", {
+						encrypt : $(document.body).attr("nutz-usr-pwd-method")
+					});
 				},
 				"::u.me.messages": function(bind){
 					$z.log.d($(this).text());

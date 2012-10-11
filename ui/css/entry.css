@@ -9,3 +9,32 @@ form {
 	border:1px solid #CCC;
 	background-color:#EEE;
 }
+
+form input {
+	font-size:14px;
+	padding:6px 8px;
+	width: 200px;
+}
+
+body, td {
+	font-size: 12px;
+}
+
+.entry-fnm {
+	color: #666;
+	text-align: right;
+}
+
+.entry-btn {
+	padding: 8px 24px;
+	color:#EEE;
+	background-color: #07E;
+	font-size:14px;
+	border-radius: 2px;
+	cursor: pointer;
+}
+
+.entry-btn:hover {
+	background-color: #08F;
+	color:#FFF;
+}

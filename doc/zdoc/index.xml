@@ -9,6 +9,8 @@
         <doc path="rule_js.zdoc"/>
         <doc path="about_ui.zdoc"/>
         <doc path="uis" title="UI控件">
+            <doc path="usr.profile.zdoc"/>
+            <doc path="usr.pwd.zdoc"/>
         </doc>
     </doc>
 </doc>

@@ -5,10 +5,11 @@ ztask2
 
 控件:
                    |> ztask.usr.projects
-[OK]tabs.h         |> ztask.usr.messager 
-		ztask.usr  -> usr.general
+                   |> ztask.usr.messager
+[OK]tabs.h         |> usr.password [OK]
+		ztask.usr  -> usr.profile [..]
 				   |
-		ztask.proj -> avata3 [OK]
+		ztask.proj -> avatas [OK]
 		           |> ztask.proj.general
 		           |> ztask.proj.rename
 		           |> ztask.proj.privilege
@@ -33,9 +34,9 @@ ztask2
 	
 函数
 	$z.ztask.draw     # 在任何选区都可以根据 t 对象建立一个 task
-
+    $z.be.pop
+    $z.be.masker
 
 jQuery 插件:
-	masker
-	pop
 	droplist
+    [OK] password

@@ -21,6 +21,25 @@ public class MongoUserApiTest extends MongoIocCase {
         // 清除所有用户数据，得到一个干净的集合
         dao.create(usrs.getUserType(), true);
     }
+    
+    @Test
+    public void test_remove_inner_doc(){
+        User u = usrs.create("zozoh", "123456", "zozohtnt@gmail.com");
+        usrs.setValue(u, "abc", "xyz");
+        
+        // 判断
+        assertEquals("xyz", usrs.fetch("zozoh").getValue("abc"));
+        
+        // 修改
+        usrs.setValue(u, "abc", "ttt");
+        assertEquals("ttt", usrs.fetch("zozoh").getValue("abc"));
+        
+        // 删除
+        usrs.setValue(u, "abc", null);
+        u = usrs.fetch("zozoh");
+        assertNull(u.getValue("abc"));
+        assertFalse(u.getValues().containsKey("abc"));
+    }
 
     @Test
     public void test_simple_query() {

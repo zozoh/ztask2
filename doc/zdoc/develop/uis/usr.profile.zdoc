@@ -1,0 +1,36 @@
+#title:UI:编辑档案(usr.profile)
+#author:zozoh
+#index:0,1
+-----------------------------------------------------------------------
+用户基本信息控件使用方法
+    
+    {{{
+    ui("usr.general").bind(selector, {
+        data : function(callback){...},       # 异步获取用户信息
+        saveValue : function(lnm, fnm, val){  # 异步存储用户某个字段的信息
+            # lnm - 为用户的登录名
+            # fnm - 字段名，比如 "brief.realName" 或者 "email.work"
+            # val - 要存储的值
+        },
+        brief : [     # 简要信息信息
+           "realName", "slogan", "title", "about"
+        ],
+        fields: {    # 扩展信息
+            "email  : ^(\\w|\\d|[._-]){2,20}@(\\w|\\d|[_-]){2,20}[.](a-zA-Z){1,10}"
+                : ["work", "person"],
+            "IM     : ^.{3, 20}$"   
+                : ["QQ", "MSN", "GTalk"],
+            "link   : ^.{, 200}$"    
+                : ["blog", "weibo", "homepage"],
+            "phone  : ^[0-9a-zA-Z +-]{6,20}$"
+                : ["work", "home", "mobile"],
+            "address: ^.{,200}$" 
+                : ["company", "home"],
+            "date   : ^(\\s{2,4}-)?\\s{2}-\\s{2})$"    
+                : ["birthday"]
+            "other"   
+                : ["sex:=male,female", 
+                   "blood:=A,B,O,AB,"]
+        }
+    });
+    }}}

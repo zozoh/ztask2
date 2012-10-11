@@ -5,8 +5,10 @@ import javax.servlet.http.HttpSession;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Strings;
+import org.nutz.mvc.Scope;
 import org.nutz.mvc.View;
 import org.nutz.mvc.annotation.At;
+import org.nutz.mvc.annotation.Attr;
 import org.nutz.mvc.annotation.Fail;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
@@ -37,7 +39,8 @@ import org.nutz.web.Webs;
  */
 @IocBean
 @At("/u")
-@Fail("jsp:web.jsp_error")
+@Ok("ajax")
+@Fail("ajax")
 public class UserModule {
 
     @Inject("refer:userApi")
@@ -51,6 +54,60 @@ public class UserModule {
 
     @Inject("java:$conf.get('usr-url-after-logout')")
     private String url_after_logout;
+
+    /**
+     * 获取用户数据对象
+     * 
+     * @param loginName
+     *            用户登录名，如果为 "me" 表示当前会话用户
+     * @return 用户数据对象
+     */
+    @At("/get/?")
+    public User get_usr(String loginName, @Attr(scope = Scope.SESSION, value = Webs.ME) User u) {
+        if (Strings.isBlank(loginName) || "me".equalsIgnoreCase(loginName))
+            return IUser.check(u.getLoginName());
+        return IUser.check(loginName);
+    }
+
+    /**
+     * 设置用户档案某一字段的值
+     * 
+     * @param loginName
+     *            用户登录名，如果为 "me" 表示当前会话用户
+     * @param fnm
+     *            字段名
+     * @param val
+     *            字段值
+     * @param u
+     *            被操作用户
+     */
+    @At("/do/set/?")
+    public void do_set_value(String loginName,
+                             @Param("fnm") String fnm,
+                             @Param("val") String val,
+                             @Attr(scope = Scope.SESSION, value = Webs.ME) User u) {
+        if (!Strings.isBlank(loginName) && !"me".equalsIgnoreCase(loginName)) {
+            u = IUser.check(loginName);
+        }
+        IUser.setValue(u, fnm, val);
+    }
+
+    /**
+     * 修改当前用户的登录密码
+     * 
+     * @param old
+     *            旧密码
+     * @param pwd
+     *            新密码
+     * @param u
+     *            被操作用户
+     */
+    @At("/do/chgpwd")
+    public void do_change_password(@Param("old") String old,
+                                   @Param("pwd") String pwd,
+                                   @Attr(scope = Scope.SESSION, value = Webs.ME) User u) {
+        IUser.changePassword(u, old, pwd);
+    }
 
     /**
      * 执行用户登陆，并根据配置信息将客户端重定向到相应地址
@@ -68,6 +125,7 @@ public class UserModule {
      * @return 根据配置生成的重定向视图
      */
     @At("/do/login")
+    @Fail("jsp:web.jsp_error")
     public View do_login(@Param("nm") String loginName, @Param("pwd") String pwd, HttpSession sess) {
         if (Strings.isBlank(loginName) || Strings.isBlank(pwd)) {
             throw UErr.INVALID_LOGIN();
@@ -92,6 +150,7 @@ public class UserModule {
      * @return 根据配置生成的重定向视图
      */
     @At("/do/reg")
+    @Fail("jsp:web.jsp_error")
     public View do_reg(@Param("lnm") String loginName,
                        @Param("pwd") String pwd,
                        @Param("email") String email) {
@@ -110,6 +169,7 @@ public class UserModule {
      * @return 根据配置生成的重定向视图
      */
     @At("/do/logout")
+    @Fail("jsp:web.jsp_error")
     public View do_logout(HttpSession sess) {
         // 移除掉 Session 对象
         sess.removeAttribute(Webs.ME);
@@ -119,5 +179,6 @@ public class UserModule {
 
     @At("/register")
     @Ok("jsp:usr.register")
+    @Fail("jsp:web.jsp_error")
     public void show_register() {}
 }

@@ -1,6 +1,7 @@
 package org.nutz.ztask.web;
 
 import org.nutz.ioc.Ioc;
+import org.nutz.lang.Strings;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
 import org.nutz.mvc.NutConfig;
@@ -37,8 +38,9 @@ public class ZTaskSetup implements Setup {
         ioc.get(UserApi.class).init();
         ioc.get(ZTaskMongoInit.class, "init").init();
 
-        // 保存 $rs
+        // 保存 ${rs} 以及 ${PWD-ENCRYPT}
         config.setAttribute(Webs.RS, conf.getAppRs());
+        config.setAttribute(Webs.PWD_ENCRYPT, Strings.trim(conf.get("usr-pwd-encrypt")));
 
         if (log.isDebugEnabled())
             log.debugf("set $rs='%s'", conf.getAppRs());

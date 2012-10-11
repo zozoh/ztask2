@@ -32,6 +32,7 @@ ui("zTaskMain", {
 
 // zTask 的主函数
 $(document).ready(function(){
+	$z.keyboard.watch();
 	var bind = ui("zTaskMain").bind("body").resize();
 });
 

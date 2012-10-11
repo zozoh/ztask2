@@ -6,7 +6,8 @@
 <html>
     <head>
         <title>${msg['err.page.title']}</title>
-        <link rel="stylesheet" type="text/css" href="${rs}/css/ztask/err.css">
+        <link rel="stylesheet" type="text/css" href="${rs}/css/css.css"/>
+        <link rel="stylesheet" type="text/css" href="${rs}/css/err.css">
     </head>
     <body>
         ${obj.reason}
