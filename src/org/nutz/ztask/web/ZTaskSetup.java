@@ -69,7 +69,7 @@ public class ZTaskSetup implements Setup {
 
     @Override
     public void destroy(NutConfig config) {
-        Ioc ioc = config.getIoc();
+        // Ioc ioc = config.getIoc();
 
         // 关闭同步在 schedule 上的线程
         // ioc.get(TimerSchedule.class, "schedule").stop();

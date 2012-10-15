@@ -8,9 +8,6 @@ import org.nutz.ioc.loader.annotation.AnnotationIocLoader;
 import org.nutz.ioc.loader.combo.ComboIocLoader;
 import org.nutz.ioc.loader.json.JsonLoader;
 import org.nutz.lang.Lang;
-import org.nutz.lang.Mirror;
-import org.nutz.mongo.MongoConnector;
-import org.nutz.mongo.MongoDao;
 import org.nutz.web.WebConfig;
 
 /**
@@ -43,22 +40,22 @@ import org.nutz.web.WebConfig;
  * 
  * @author zozoh(zozohtnt@gmail.com)
  */
-public abstract class MongoIocCase {
+public abstract class IocCase {
 
     protected WebConfig conf;
 
     protected Ioc ioc;
 
-    protected MongoDao dao;
-
     protected String[] ioc_json_path;
 
     protected String[] ioc_anno_packages;
 
-    public MongoIocCase() {
+    public IocCase() {
         ioc_json_path = Lang.array("ioc");
-        ioc_anno_packages = Lang.array("org.nutz");
+        ioc_anno_packages = ioc_anno_packages();
     }
+    
+    protected abstract String[] ioc_anno_packages();
 
     @Before
     public void _before() {
@@ -73,8 +70,6 @@ public abstract class MongoIocCase {
 
         // 获取 Dao 对象
         conf = ioc.get(WebConfig.class, "conf");
-        MongoConnector conn = ioc.get(MongoConnector.class, "connector");
-        dao = (MongoDao) Mirror.me(conf).invoke(conf, "dao", conn, "db-name");
 
         // 调用子类用例初始化函数
         onBefore();

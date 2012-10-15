@@ -1,25 +1,19 @@
-package org.nutz.usr.mongo;
+package org.nutz.usr.fs;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.nutz.lang.Strings;
-import org.nutz.mongo.annotation.*;
 import org.nutz.usr.User;
 
-@Co(User.CO_NM)
-public class MongoUser implements User {
+public class FsUser implements User, Comparable<User> {
 
-    @CoField(User.COF_LNM)
     private String loginName;
 
-    @CoField("mail")
     private String email;
 
-    @CoField("pwd")
     private String password;
 
-    @CoField(User.COF_VALS)
     private Map<String, Object> values;
 
     public String getLoginName() {
@@ -122,6 +116,11 @@ public class MongoUser implements User {
     public String getString(String fnm) {
         Object obj = getValue(fnm);
         return obj == null ? null : obj.toString();
+    }
+
+    @Override
+    public int compareTo(User u) {
+        return loginName.compareTo(u.getLoginName());
     }
 
 }

@@ -1,49 +1,51 @@
-package org.nutz.usr.mongo;
+package org.nutz.dmn.mongo;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.nutz.dmn.Domain;
 import org.nutz.lang.Strings;
-import org.nutz.mongo.annotation.*;
-import org.nutz.usr.User;
+import org.nutz.mongo.annotation.Co;
+import org.nutz.mongo.annotation.CoField;
 
-@Co(User.CO_NM)
-public class MongoUser implements User {
+@Co(Domain.CO_NM)
+public class MongoDomain implements Domain {
 
-    @CoField(User.COF_LNM)
-    private String loginName;
+    @CoField(Domain.COF_DNM)
+    private String name;
 
-    @CoField("mail")
-    private String email;
-
-    @CoField("pwd")
-    private String password;
-
-    @CoField(User.COF_VALS)
+    @CoField(Domain.COF_VALS)
     private Map<String, Object> values;
 
-    public String getLoginName() {
-        return loginName;
+    @CoField("ct")
+    private Date createTime;
+
+    @CoField("ow")
+    private String ownerName;
+
+    public String getName() {
+        return name;
     }
 
-    public void setLoginName(String loginName) {
-        this.loginName = loginName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getEmail() {
-        return email;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
-    public String getPassword() {
-        return password;
+    public String getOwnerName() {
+        return ownerName;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
     }
 
     public Map<String, Object> getValues() {
@@ -123,5 +125,4 @@ public class MongoUser implements User {
         Object obj = getValue(fnm);
         return obj == null ? null : obj.toString();
     }
-
 }

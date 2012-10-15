@@ -1,5 +1,5 @@
 {
-	"ztask" : {
+	"wirelessw" : {
 		"ps" : [
 		      "org.nutz.mvc.impl.processor.UpdateRequestAttributesProcessor",
 		      "org.nutz.ztask.web.processor.SetInfoProcessor",

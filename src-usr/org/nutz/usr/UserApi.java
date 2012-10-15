@@ -13,11 +13,6 @@ public interface UserApi extends Initializable {
     Class<? extends User> getUserType();
 
     /**
-     * @return 系统支持的用户字段列表
-     */
-    UserField[] getFields();
-
-    /**
      * 获取一个用户
      * 
      * @param loginName
@@ -81,6 +76,11 @@ public interface UserApi extends Initializable {
     boolean remove(String loginName);
 
     /**
+     * 清除所有用户数据
+     */
+    void clear();
+
+    /**
      * @return 用户的总数
      */
     long count();
@@ -93,11 +93,30 @@ public interface UserApi extends Initializable {
     long count(UserQuery q);
 
     /**
+     * @param keyword
+     *            用户查询关键字
+     * @return 符合条件的用户的总数
+     */
+    long count(String keyword);
+
+    /**
+     * 查询一组用户
+     * 
      * @param q
      *            用户查询对象
      * @return 符合条件的用户列表
      */
     List<User> query(UserQuery q);
+
+    /**
+     * 查询一组用户
+     * 
+     * @param keyword
+     *            查询关键字
+     * @return 符合条件的用户列表
+     * @see UserQuery
+     */
+    List<User> query(String keyword);
 
     /**
      * 迭代一组用户
@@ -108,6 +127,16 @@ public interface UserApi extends Initializable {
      *            每个用户的特殊处理
      */
     void each(UserQuery q, Each<User> callback);
+
+    /**
+     * 迭代一组用户
+     * 
+     * @param keyword
+     *            用户查询关键字
+     * @param callback
+     *            每个用户的特殊处理
+     */
+    void each(String keyword, Each<User> callback);
 
     /**
      * 将某个 Email 字段变成账户的主 Email。

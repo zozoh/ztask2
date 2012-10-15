@@ -20,7 +20,11 @@ import org.nutz.ztask.web.ZTaskSetup;
 @IocBy(args = {"*org.nutz.ioc.loader.json.JsonLoader",
                "ioc",
                "*org.nutz.ioc.loader.annotation.AnnotationIocLoader",
-               "org.nutz"}, type = ComboIocProvider.class)
+               "org.nutz.usr.mongo",
+               "org.nutz.dmn.mongo",
+               "org.nutz.web.module",
+               "org.nutz.ztask.web.module",
+               "org.nutz.ztask.impl"}, type = ComboIocProvider.class)
 @Views({AjaxViewMaker.class})
 @ChainBy(args = "ztask.chain.js")
 @Chain("ztask")

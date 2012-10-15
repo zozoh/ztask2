@@ -1,9 +1,5 @@
 package org.nutz.usr.mongo;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Each;
@@ -14,56 +10,24 @@ import org.nutz.log.Logs;
 import org.nutz.mongo.MongoDao;
 import org.nutz.mongo.util.MCur;
 import org.nutz.mongo.util.Moo;
+import org.nutz.usr.AbstractUserApi;
 import org.nutz.usr.UErr;
 import org.nutz.usr.User;
-import org.nutz.usr.UserField;
 import org.nutz.usr.UserQuery;
-import org.nutz.usr.UserApi;
-import org.nutz.usr.util.Users;
 
 @IocBean(name = "userApi")
-public class MongoUserApi implements UserApi {
+public class MongoUserApi extends AbstractUserApi {
 
     private static final Log log = Logs.get();
 
     @Inject("java:$conf.dao($connector, 'db-name')")
     private MongoDao dao;
 
-    @Inject("java:$conf.get('usr-nm')")
-    private String _regex_name;
-
-    @Inject("java:$conf.get('usr-pwd')")
-    private String _regex_pwd;
-
-    @Inject("java:$conf.get('rgx.email')")
-    private String _regex_email;
-
-    @Inject("java:$conf.get('usr-fields')")
-    String _usr_fields;
-
-    @Inject("java:$conf.get('usr-major-email')")
-    private String _usr_major_email;
-
     @Override
     public void init() {
         dao.create(getUserType(), false);
         if (log.isInfoEnabled())
-            log.info("mongo.usrs collections checked");
-    }
-
-    /**
-     * 缓存从配置文件读出的结果
-     */
-    private UserField[] fields;
-
-    public void set_usr_fields(String str) {
-        this._usr_fields = str;
-        // 进行解析
-        String[] lines = Strings.splitIgnoreBlank(str, "\n");
-        fields = new UserField[lines.length];
-        for (int i = 0; i < lines.length; i++) {
-            fields[i] = Users.parseUserField(lines[i]);
-        }
+            log.info("mongo.usr collections checked");
     }
 
     @Override
@@ -77,66 +41,21 @@ public class MongoUserApi implements UserApi {
     }
 
     @Override
-    public User check(String loginName) {
-        User u = fetch(loginName);
-        if (null == u)
-            throw UErr.NO_EXISTS(loginName);
-        return u;
-    }
-
-    @Override
-    public User checkValues(User u) {
-        if (null == u.getValues()) {
-            User dbUser = dao.findOne(MongoUser.class, Q(u.getLoginName()));
-            if (null != dbUser)
-                u.setValues(dbUser.getValues());
-            if (null == u.getValues())
-                u.setValues(new HashMap<String, Object>());
-        }
-        return u;
-    }
-
-    @Override
-    public User create(String loginName, String pwd, String email) {
-        // 检查值
-        if (Strings.isBlank(loginName) || !loginName.matches(_regex_name))
-            throw UErr.INVALID_NAME(loginName);
-
-        if (Strings.isBlank(pwd) || !pwd.matches(_regex_pwd))
-            throw UErr.INVALID_PASSWORD();
-
-        if (Strings.isBlank(email) || !email.matches(_regex_email))
-            throw UErr.INVALID_EMAIL(email);
-
-        // 确保 loginName 不存在
-        if (dao.count(MongoUser.class, Q(loginName)) > 0)
-            throw UErr.EXISTS(loginName);
-
-        // 确保 email 不存在
-        if (dao.count(MongoUser.class, Moo.NEW("email", email)) > 0)
-            throw UErr.EMAIL_USED(email);
-
-        // 首先创建一条记录
+    protected User do_create(String loginName) {
         MongoUser u = Mirror.me(MongoUser.class).born();
         u.setLoginName(loginName);
         dao.save(u);
-
-        // 保存 Email 信息
-        setValue(u, _usr_major_email, email);
-
-        // 设置主邮箱
-        switchMajorEmail(u, _usr_major_email);
-
-        // 修改密码
-        changePassword(u, null, pwd);
-
-        // 搞定定 ^_^
         return u;
     }
 
     @Override
     public boolean remove(String loginName) {
         return dao.remove(getUserType(), Q(loginName)).getN() > 0;
+    }
+
+    @Override
+    public void clear() {
+        dao.create(getUserType(), true);
     }
 
     @Override
@@ -147,17 +66,6 @@ public class MongoUserApi implements UserApi {
     @Override
     public long count(UserQuery q) {
         return dao.count(getUserType(), Q(q));
-    }
-
-    @Override
-    public List<User> query(UserQuery q) {
-        final List<User> list = new LinkedList<User>();
-        each(q, new Each<User>() {
-            public void invoke(int index, User u, int length) {
-                list.add(u);
-            }
-        });
-        return list;
     }
 
     @Override
@@ -207,11 +115,8 @@ public class MongoUserApi implements UserApi {
                          Moo.NEW(User.COF_LNM, u.getLoginName()),
                          Moo.SET(User.COF_VALS + "." + fnm, sVal));
         }
-    }
-
-    @Override
-    public UserField[] getFields() {
-        return fields;
+        // 更新内存对象
+        u.setValue(fnm, val);
     }
 
     /**
@@ -245,12 +150,9 @@ public class MongoUserApi implements UserApi {
             oo.eq("email", q.qEmail());
         }
         if (q.qValues() != null && q.qValues().length > 0) {
-            Moo[] subs = new Moo[q.qValues().length];
-            int i = 0;
             for (String[] ss : q.qValues()) {
-                subs[i++] = Moo.NEW(User.COF_VALS + "." + ss[0], ss[1]);
+                oo.eq(User.COF_VALS + "." + ss[0], ss[1]);
             }
-            oo.or(subs);
         }
         return oo;
     }

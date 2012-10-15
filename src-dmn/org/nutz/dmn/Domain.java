@@ -1,47 +1,40 @@
-package org.nutz.usr;
+package org.nutz.dmn;
 
+import java.util.Date;
 import java.util.Map;
 
-public interface User {
+public interface Domain {
 
     /*
      * 下面是数据库表名和字段名的常量
      */
 
-    public static final String CO_NM = "usr";
-    public static final String COF_LNM = "nm";
+    public static final String CO_NM = "dmn";
+    public static final String COF_DNM = "nm";
     public static final String COF_VALS = "vals";
 
     /**
-     * @return 用户的登录名
+     * @return 域名
      */
-    String getLoginName();
+    String getName();
 
     /**
-     * @return 用户的主邮箱
+     * @return 域的所有者名称
      */
-    String getEmail();
+    String getOwnerName();
 
     /**
-     * 设置用户的主邮箱，本函数不会做持久化
+     * 重新设置域的所有者名称
      * 
-     * @param email
-     *            用户的主邮箱
+     * @param ownerName
+     *            域所有者名称
      */
-    void setEmail(String email);
+    void setOwnerName(String ownerName);
 
     /**
-     * @return 用户的密码
+     * @return 域创建时间
      */
-    String getPassword();
-
-    /**
-     * 非持久化设置用户对象密码
-     * 
-     * @param pwd
-     *            用户密码
-     */
-    void setPassword(String pwd);
+    Date getCreateTime();
 
     /**
      * @return 用户字段所有的字段填充表

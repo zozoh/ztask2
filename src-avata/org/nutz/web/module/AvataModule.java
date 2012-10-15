@@ -1,4 +1,4 @@
-package org.nutz.ztask.web.module.avata;
+package org.nutz.web.module;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -25,9 +25,9 @@ import org.nutz.mvc.annotation.Ok;
  */
 @IocBean
 @At("/avata")
-public class ZTaskAvataModule {
+public class AvataModule {
 
-    @Inject("java:$conf.get('sys-avata-home')")
+    @Inject("java:$conf.get('avata-home')")
     private String avata_home;
 
     /**
