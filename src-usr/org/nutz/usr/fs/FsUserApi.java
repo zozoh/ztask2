@@ -152,7 +152,7 @@ public class FsUserApi extends AbstractUserApi {
 
         // 检查旧密码
         if (pwdOld != null) {
-            if (pwdOld.equals(u.getPassword())) {
+            if (!pwdOld.equals(u.getPassword())) {
                 throw UErr.INVALID_PASSWORD();
             }
         }

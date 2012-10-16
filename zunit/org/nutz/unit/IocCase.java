@@ -54,7 +54,7 @@ public abstract class IocCase {
         ioc_json_path = Lang.array("ioc");
         ioc_anno_packages = ioc_anno_packages();
     }
-    
+
     protected abstract String[] ioc_anno_packages();
 
     @Before
@@ -70,10 +70,19 @@ public abstract class IocCase {
 
         // 获取 Dao 对象
         conf = ioc.get(WebConfig.class, "conf");
+        setupConf(conf);
 
         // 调用子类用例初始化函数
         onBefore();
     }
+
+    /**
+     * 这个方法可以被子类用来修改容器中的 conf 对象的值
+     * 
+     * @param conf
+     *            容器中的 $conf
+     */
+    protected void setupConf(WebConfig conf) {}
 
     @After
     public void _after() {
