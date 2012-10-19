@@ -72,11 +72,6 @@ public interface DomainApi extends Initializable {
     boolean remove(String name);
 
     /**
-     * 清除所有域数据
-     */
-    void clear();
-
-    /**
      * @return 域的总数
      */
     long count();

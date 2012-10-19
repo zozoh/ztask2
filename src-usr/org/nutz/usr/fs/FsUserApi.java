@@ -81,10 +81,10 @@ public class FsUserApi extends AbstractUserApi {
             Pattern regex = null;
             String name = null;
             try {
-                regex = Pattern.compile(q.qName());
+                regex = Pattern.compile(q.name);
             }
             catch (Exception e1) {
-                name = q.qName();
+                name = q.name;
             }
 
             // 开始查找 ...s
@@ -101,15 +101,15 @@ public class FsUserApi extends AbstractUserApi {
                         continue;
 
                     // 进行 Email 的筛选
-                    if (!Strings.isBlank(q.qEmail())) {
+                    if (null != q.email) {
                         if (Strings.isBlank(u.getEmail())
-                            || !q.qEmail().equalsIgnoreCase(u.getEmail()))
+                            || !q.email.equalsIgnoreCase(u.getEmail()))
                             continue;
                     }
                     // 进行 value 筛选
-                    if (q.qValues() != null && q.qValues().length > 0) {
+                    if (q.values != null && q.values.length > 0) {
                         boolean matched = true;
-                        for (String[] ss : q.qValues()) {
+                        for (String[] ss : q.values) {
                             String fnm = ss[0];
                             Object val = u.getValue(fnm);
                             if (null == val || !val.toString().equalsIgnoreCase(ss[1])) {

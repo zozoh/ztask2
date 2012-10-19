@@ -76,11 +76,6 @@ public interface UserApi extends Initializable {
     boolean remove(String loginName);
 
     /**
-     * 清除所有用户数据
-     */
-    void clear();
-
-    /**
      * @return 用户的总数
      */
     long count();

@@ -10,7 +10,6 @@ import org.nutz.usr.UserApi;
 import org.nutz.web.WebConfig;
 import org.nutz.web.Webs;
 import org.nutz.ztask.ZTask;
-import org.nutz.ztask.impl.mongo.ZTaskMongoInit;
 import org.nutz.ztask.util.ZTasks;
 
 /**
@@ -36,7 +35,6 @@ public class ZTaskSetup implements Setup {
 
         // 初始化数据
         ioc.get(UserApi.class).init();
-        ioc.get(ZTaskMongoInit.class, "init").init();
 
         // 保存 ${rs} 以及 ${PWD-ENCRYPT}
         config.setAttribute(Webs.RS, conf.getAppRs());

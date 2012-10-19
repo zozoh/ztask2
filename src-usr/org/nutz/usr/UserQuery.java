@@ -42,8 +42,12 @@ public class UserQuery extends WebQuery {
 
     @Override
     protected void parseKeyword() {
-        if (Strings.isBlank(keyword))
+        if (Strings.isBlank(keyword)) {
+            name = null;
+            email = null;
+            values = null;
             return;
+        }
 
         // 开始解析
         String[] ss = Strings.splitIgnoreBlank(keyword, ",");
@@ -52,7 +56,7 @@ public class UserQuery extends WebQuery {
         for (String s : ss) {
             m = REGEX_EMAIL.matcher(s);
             if (m.find()) {
-                qEmail = s;
+                email = s;
                 continue;
             }
             m = REGEX_VALUE.matcher(s);
@@ -60,28 +64,17 @@ public class UserQuery extends WebQuery {
                 vals.add(Lang.array(Strings.trim(m.group(1)), Strings.trim(m.group(3))));
                 continue;
             }
-            qName = s;
+            name = s;
         }
         if (!vals.isEmpty()) {
-            qValues = vals.toArray(new String[vals.size()][]);
+            values = vals.toArray(new String[vals.size()][]);
         }
     }
 
-    private String qName;
+    public String name;
 
-    private String qEmail;
+    public String email;
 
-    private String[][] qValues;
+    public String[][] values;
 
-    public String qName() {
-        return qName;
-    }
-
-    public String qEmail() {
-        return qEmail;
-    }
-
-    public String[][] qValues() {
-        return qValues;
-    }
 }

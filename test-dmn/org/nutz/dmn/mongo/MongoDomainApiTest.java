@@ -19,40 +19,39 @@ public class MongoDomainApiTest extends IocCase {
         return Lang.array("org.nutz.usr.mongo", "org.nutz.dmn.mongo");
     }
 
-    private DomainApi domains;
+    @Test
+    public void test_simple_create_fetch_remove() {
+        Domain dmn = Idmn.create("nutz", ow);
+        assertNotNull(dmn);
 
-    private UserApi usrs;
+        dmn = Idmn.fetch("nutz");
+        assertEquals(ow.getLoginName(), dmn.getOwnerName());
+
+        Idmn.remove("nutz");
+        dmn = Idmn.fetch("nutz");
+        assertNull(dmn);
+        assertEquals(0, Idmn.count());
+    }
+
+    private DomainApi Idmn;
+
+    private UserApi Iusr;
 
     private User ow;
 
     @Override
     protected void onBefore() {
         // 获得用户服务类
-        domains = ioc.get(DomainApi.class);
-        usrs = ioc.get(UserApi.class);
+        Idmn = ioc.get(DomainApi.class);
+        Iusr = ioc.get(UserApi.class);
         // 清除所有域数据
-        domains.init();
-        domains.clear();
+        Idmn.init();
+        Idmn.clear();
         // 清除所有用户数据
-        usrs.init();
-        usrs.clear();
+        Iusr.init();
+        Iusr.clear();
 
         // 准备一个用户数据
-        ow = usrs.create("zozoh", "123456", "zozohtnt@gmail.com");
+        ow = Iusr.create("zozoh", "123456", "zozohtnt@gmail.com");
     }
-
-    @Test
-    public void test_simple_create_fetch_remove() {
-        Domain dmn = domains.create("nutz", ow);
-        assertNotNull(dmn);
-
-        dmn = domains.fetch("nutz");
-        assertEquals(ow.getLoginName(), dmn.getOwnerName());
-
-        domains.remove("nutz");
-        dmn = domains.fetch("nutz");
-        assertNull(dmn);
-        assertEquals(0, domains.count());
-    }
-
 }

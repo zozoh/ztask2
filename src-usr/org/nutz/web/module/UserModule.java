@@ -44,7 +44,7 @@ import org.nutz.web.Webs;
 public class UserModule {
 
     @Inject("refer:userApi")
-    private UserApi IUser;
+    private UserApi Iusr;
 
     @Inject("java:$conf.get('usr-url-after-reg')")
     private String url_after_reg;
@@ -65,8 +65,8 @@ public class UserModule {
     @At("/get/?")
     public User get_usr(String loginName, @Attr(scope = Scope.SESSION, value = Webs.ME) User u) {
         if (Strings.isBlank(loginName) || "me".equalsIgnoreCase(loginName))
-            return IUser.check(u.getLoginName());
-        return IUser.check(loginName);
+            return Iusr.check(u.getLoginName());
+        return Iusr.check(loginName);
     }
 
     /**
@@ -87,9 +87,9 @@ public class UserModule {
                              @Param("val") String val,
                              @Attr(scope = Scope.SESSION, value = Webs.ME) User u) {
         if (!Strings.isBlank(loginName) && !"me".equalsIgnoreCase(loginName)) {
-            u = IUser.check(loginName);
+            u = Iusr.check(loginName);
         }
-        IUser.setValue(u, fnm, val);
+        Iusr.setValue(u, fnm, val);
     }
 
     /**
@@ -106,7 +106,7 @@ public class UserModule {
     public void do_change_password(@Param("old") String old,
                                    @Param("pwd") String pwd,
                                    @Attr(scope = Scope.SESSION, value = Webs.ME) User u) {
-        IUser.changePassword(u, old, pwd);
+        Iusr.changePassword(u, old, pwd);
     }
 
     /**
@@ -131,7 +131,7 @@ public class UserModule {
             throw UErr.INVALID_LOGIN();
         }
         // 看看用户的密码是否匹配
-        User u = IUser.fetch(loginName);
+        User u = Iusr.fetch(loginName);
         if (null == u)
             throw UErr.INVALID_NAME(loginName);
         if (!pwd.equals(u.getPassword()))
@@ -155,7 +155,7 @@ public class UserModule {
                        @Param("pwd") String pwd,
                        @Param("email") String email) {
         // 创建用户
-        IUser.create(loginName, pwd, email);
+        Iusr.create(loginName, pwd, email);
 
         // 注册成功，返回重定向
         return new ServerRedirectView(url_after_reg);

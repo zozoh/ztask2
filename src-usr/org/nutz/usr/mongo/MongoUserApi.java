@@ -143,14 +143,14 @@ public class MongoUserApi extends AbstractUserApi {
             return null;
 
         Moo oo = Moo.NEW();
-        if (!Strings.isBlank(q.qName())) {
-            oo.match("loginName", q.qName());
+        if (null != q.name) {
+            oo.match("loginName", q.name);
         }
-        if (!Strings.isBlank(q.qEmail())) {
-            oo.eq("email", q.qEmail());
+        if (null != q.email) {
+            oo.eq("email", q.email);
         }
-        if (q.qValues() != null && q.qValues().length > 0) {
-            for (String[] ss : q.qValues()) {
+        if (q.values != null && q.values.length > 0) {
+            for (String[] ss : q.values) {
                 oo.eq(User.COF_VALS + "." + ss[0], ss[1]);
             }
         }
