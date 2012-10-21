@@ -8,6 +8,9 @@
     <doc path="develop" title="开发者">
         <doc path="rule_js.zdoc"/>
         <doc path="about_ui.zdoc"/>
+        <doc path="jqplug" title="jQuery插件">
+            <doc path="jquery.masker.zdoc"/>
+        </doc>
         <doc path="uis" title="UI控件">
             <doc path="usr.profile.zdoc"/>
             <doc path="usr.pwd.zdoc"/>
