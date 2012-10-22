@@ -29,7 +29,7 @@ UI
                                           # null 表示扩展点不存在
         dft_option : {...},               # 提供了默认的配置信息
         events : {     # 本选区具体都委派了哪些事件
-            '[click:]选择器' :  function(e){...}   # this 为选择器匹配了的 DOM 对象
+            '[click:]选择器' :  function(e, bind){...}   # this 为选择器匹配了的 DOM 对象
             ...
         },
         methods : {   # 本UI要支持的外部方法
