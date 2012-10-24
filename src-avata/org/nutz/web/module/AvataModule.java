@@ -93,7 +93,7 @@ public class AvataModule {
         AvataPathAdaptor apa = pathAdaptors.get(cate);
         if (null == apa)
             apa = defaultPathAdaptor;
-        String path = apa.getPath(cate, nm, sz) + "." + avata_type;
+        String path = avata_home + "/" + apa.getPath(cate, nm, sz) + "." + avata_type;
         return new File(Disks.normalize(path));
     }
 
