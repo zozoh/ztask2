@@ -19,7 +19,6 @@ import org.nutz.mongo.MongoDao;
 import org.nutz.mongo.util.MCur;
 import org.nutz.mongo.util.Moo;
 import org.nutz.usr.User;
-import org.nutz.usr.mongo.MongoUser;
 
 @IocBean(name = "domainApi")
 public class MongoDomainApi implements DomainApi {
@@ -34,7 +33,8 @@ public class MongoDomainApi implements DomainApi {
 
     @Override
     public void init() {
-        dao.create(MongoUser.class, false);
+        dao.create(MongoDomain.class, false);
+        dao.create(MongoWatching.class, false);
         if (log.isInfoEnabled())
             log.info("mongo.dmn collections checked");
     }
@@ -99,6 +99,93 @@ public class MongoDomainApi implements DomainApi {
     }
 
     @Override
+    public long countWatchers(String dnm) {
+        return dao.count(MongoWatching.class, Moo.NEW("domainName", dnm));
+    }
+
+    @Override
+    public List<String> queryWatcher(String dnm, String keyword, int pn, int pgsz) {
+        final List<String> list = new LinkedList<String>();
+        // 计算游标
+        MCur mc = MCur.ASC("userName");
+        if (pn > 0) {
+            mc.skip((pn - 1) * Math.max(1, pgsz)).limit(pgsz);
+        }
+        // 计算查询条件
+        Moo q = Moo.NEW("domainName", dnm);
+        if (!Strings.isBlank(keyword)) {
+            q.contains("userName", keyword);
+        }
+        // 查询
+        dao.each(new Each<MongoWatching>() {
+            public void invoke(int index, MongoWatching mw, int length) {
+                list.add(mw.getUserName());
+            }
+        }, MongoWatching.class, q, mc);
+        return list;
+    }
+
+    @Override
+    public void addWatcher(Domain d, String loginName) {
+        if (!isWatch(d.getName(), loginName)) {
+            MongoWatching mw = new MongoWatching();
+            mw.setCreateTime(Times.now());
+            mw.setDomainName(d.getName());
+            mw.setUserName(loginName);
+            dao.save(mw);
+        }
+    }
+
+    @Override
+    public long removeWatcher(Domain d, String loginName) {
+        return dao.remove(MongoWatching.class,
+                          Moo.NEW("domainName", d.getName()).append("userName", loginName)).getN();
+    }
+
+    @Override
+    public boolean isWatch(String dnm, String loginName) {
+        return dao.count(MongoWatching.class,
+                         Moo.NEW("domainName", dnm).append("userName", loginName)) > 0;
+    }
+
+    @Override
+    public Domain addAdmin(String dnm, String loginName) {
+        Domain d = check(dnm);
+        d.addAdmin(loginName);
+        save(d);
+        return d;
+    }
+
+    @Override
+    public Domain removeAdmin(String dnm, String loginName) {
+        Domain d = check(dnm);
+        d.removeAdmin(loginName);
+        save(d);
+        return d;
+    }
+
+    @Override
+    public Domain addMember(String dnm, String loginName) {
+        Domain d = check(dnm);
+        d.addMember(loginName);
+        save(d);
+        return d;
+    }
+
+    @Override
+    public Domain removeMember(String dnm, String loginName) {
+        Domain d = check(dnm);
+        d.removeMember(loginName);
+        save(d);
+        return d;
+    }
+
+    @Override
+    public void save(Domain d) {
+        dao.save(d);
+    }
+
+    @Override
     public boolean remove(String name) {
         return dao.remove(getDomainType(), Q(name)).getN() > 0;
     }
@@ -106,6 +193,7 @@ public class MongoDomainApi implements DomainApi {
     @Override
     public void clear() {
         dao.create(getDomainType(), true);
+        dao.create(MongoWatching.class, true);
     }
 
     @Override

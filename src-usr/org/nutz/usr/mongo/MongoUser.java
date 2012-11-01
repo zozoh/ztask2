@@ -8,6 +8,7 @@ import org.nutz.mongo.annotation.*;
 import org.nutz.usr.User;
 
 @Co(User.CO_NM)
+@CoIndexes({"!:+loginName", "!:+email"})
 public class MongoUser implements User {
 
     @CoField(User.COF_LNM)

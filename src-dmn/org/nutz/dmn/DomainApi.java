@@ -140,7 +140,7 @@ public interface DomainApi extends Initializable {
      *            域名
      * @return 关注者数量
      */
-    int countWatchers(String dnm);
+    long countWatchers(String dnm);
 
     /**
      * 查询域的关注者列表
@@ -174,8 +174,9 @@ public interface DomainApi extends Initializable {
      *            域对象
      * @param loginName
      *            用户登录名
+     * @return 实际移除了多少记录
      */
-    void removeWatcher(Domain d, String loginName);
+    long removeWatcher(Domain d, String loginName);
 
     /**
      * @param dnm
@@ -208,15 +209,6 @@ public interface DomainApi extends Initializable {
     Domain removeAdmin(String dnm, String loginName);
 
     /**
-     * @param dnm
-     *            域名
-     * @param loginName
-     *            用户登录名
-     * @return 是否是管理员
-     */
-    boolean isAdmin(String dnm, String loginName);
-
-    /**
      * 增加域成员（非持久化操作）
      * 
      * @param dnm
@@ -224,7 +216,7 @@ public interface DomainApi extends Initializable {
      * @param loginName
      *            用户登录名
      */
-    Domain addMemeber(String dnm, String loginName);
+    Domain addMember(String dnm, String loginName);
 
     /**
      * 删除一个域成员（非持久化操作）

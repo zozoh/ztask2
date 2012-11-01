@@ -33,7 +33,7 @@ public interface Domain {
     void setOwnerName(String ownerName);
 
     /**
-     * @return 域中的管理员，管理员，一定包括 owner
+     * @return 域中的管理员，一定不为 null，不包括 owner
      */
     List<String> getAdmins();
 
@@ -80,7 +80,7 @@ public interface Domain {
     boolean isAdminOnly(String loginName);
 
     /**
-     * @return 域中的成员
+     * @return 域中的成员，一定不会为 null
      */
     List<String> getMembers();
 
@@ -98,7 +98,7 @@ public interface Domain {
      * @param loginName
      *            用户登录名
      */
-    void addMemeber(String loginName);
+    void addMember(String loginName);
 
     /**
      * 删除一个域成员（非持久化操作）

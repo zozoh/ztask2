@@ -10,9 +10,15 @@ import org.nutz.dmn.Domain;
 import org.nutz.lang.Strings;
 import org.nutz.mongo.annotation.Co;
 import org.nutz.mongo.annotation.CoField;
+import org.nutz.mongo.annotation.CoId;
+import org.nutz.mongo.annotation.CoIndexes;
 
 @Co(Domain.CO_NM)
+@CoIndexes("!:+name")
 public class MongoDomain implements Domain {
+
+    @CoId
+    private String id;
 
     @CoField(Domain.COF_DNM)
     private String name;
@@ -31,6 +37,14 @@ public class MongoDomain implements Domain {
 
     @CoField("members")
     private List<String> members;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -58,7 +72,7 @@ public class MongoDomain implements Domain {
 
     @Override
     public List<String> getAdmins() {
-        return admins;
+        return null == admins ? new LinkedList<String>() : admins;
     }
 
     @Override
@@ -81,7 +95,7 @@ public class MongoDomain implements Domain {
     @Override
     public void removeAdmin(String loginName) {
         if (null != admins && admins.remove(loginName)) {
-            this.addMemeber(loginName);
+            this.addMember(loginName);
         }
     }
 
@@ -97,7 +111,7 @@ public class MongoDomain implements Domain {
 
     @Override
     public List<String> getMembers() {
-        return members;
+        return null == members ? new LinkedList<String>() : members;
     }
 
     @Override
@@ -109,7 +123,7 @@ public class MongoDomain implements Domain {
     }
 
     @Override
-    public void addMemeber(String loginName) {
+    public void addMember(String loginName) {
         if (null == members)
             members = new LinkedList<String>();
         this.removeAdmin(loginName);
