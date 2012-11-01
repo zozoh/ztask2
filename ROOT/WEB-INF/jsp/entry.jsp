@@ -5,7 +5,7 @@
 <link rel="stylesheet" type="text/css" href="${rs}/css/entry.css"/>
 <%/*-------------------------------------------------------------------------- 依赖库 */%>
 <%@include file="/WEB-INF/jsp/include/_crypto_js.jsp" %>
-<script language="Javascript" src="${rs}/lib/jquery.js"></script>
+<script language="Javascript" src="${rs}/nutz/lib/jquery.js"></script>
 <%/*-------------------------------------------------------------------------- jQuery 插件 */%>
 <script language="Javascript" src="${rs}/nutz/jqplug/jquery.password.js"></script>
 <link rel="stylesheet" type="text/css" href="${rs}/nutz/jqplug/jquery.password.css"/>
