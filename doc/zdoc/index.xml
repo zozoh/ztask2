@@ -15,5 +15,8 @@
             <doc path="usr.profile.zdoc"/>
             <doc path="usr.pwd.zdoc"/>
         </doc>
+        <doc path="jqplug" title="jQuery插件">
+            <doc path="floatdiv.zdoc"/>
+        </doc>
     </doc>
 </doc>

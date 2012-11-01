@@ -1,0 +1,42 @@
+#title:floatdiv
+#author:zozoh
+#index:0,1
+--------------------------------------------------------------------
+floatdiv 概述
+
+    根据宿主对象，浮动一个 div 出来，显示在相对宿主对象的某个位置
+    {{{
+    LT     MT      RT
+    L  $(selector) R
+    LB     MB      RB
+    }}}
+
+--------------------------------------------------------------------
+floatdiv 的使用方式
+
+    {{{
+    {
+        className : 'xxxx',      # 产生出来的 DIV 的 className
+        dockAt    : 'lt|rt|...', # 参见位置图
+        width     : 200,         # DIV 的宽度， 默认为 200
+        height    : 0,           # DIV 的高度，默认为自动获取
+        padding   : 10,          # 显示 DIV 的边距，默认为 0
+        # 显示后: this 为宿主对象的 jq，div 为生成的 div 对象的 jq
+        on_show   : function(div){...},
+        # 关闭前: this 为宿主对象的 jq，div 为生成的 div 对象的 jq
+        on_close  : function(div){...},  
+        # 事件
+        events : {  # 本选区具体都委派了哪些事件
+            '[click:]选择器' :  function(e, helper){...}   # this 为选择器匹配了的 DOM 对象
+            ...
+        }
+    }
+    #
+    # Helper 对象的格式
+    #
+    {
+        option : {...},    # 配置对象
+        jq     : {...},    # 对应的宿主对象
+        div    : {...}     # 对应浮动的 DIV 的 jq 对象
+    }
+    }}}
