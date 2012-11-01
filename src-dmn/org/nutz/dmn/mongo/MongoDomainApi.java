@@ -50,6 +50,11 @@ public class MongoDomainApi implements DomainApi {
     }
 
     @Override
+    public boolean exists(String name) {
+        return dao.count(getDomainType(), Q(name)) > 0;
+    }
+
+    @Override
     public Domain check(String name) {
         Domain d = fetch(name);
         if (null == d)
@@ -77,7 +82,7 @@ public class MongoDomainApi implements DomainApi {
         }
 
         // 首先检查一下这个域是否存在
-        if (null != fetch(name))
+        if (exists(name))
             throw DErr.EXISTS(name);
 
         // 开始创建域对象

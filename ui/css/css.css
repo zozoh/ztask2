@@ -29,3 +29,25 @@ body {
     -webkit-user-select: none;
     user-select: none;
 }
+
+/*------------------------------------------------------ #按钮 ----*/
+.btn {
+    background-color:#07E;
+    color:#DDF;
+    display: inline-block;
+    padding:2px 6px;
+    height: 24px;
+    line-height: 22px;
+    border-radius: 2px;
+    cursor: pointer;
+    vertical-align: middle;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.btn:hover {
+    color:#FFF;
+    background: #08F;
+}

@@ -1,9 +1,16 @@
 (function($, ui, $z) {
     ui('ztask.dmn.mana', {
+        dft_option : {
+            'className' : 'dmn-mana',
+            'cols' : [300, '*', '*'],
+            'rows' : ['*']
+        },
+        extend : 'cells',
         on_init: function() {
-            var html = '<div class="dmn-mana">';
-            html += '</div>';
-            this.selection.html(html);
+            this.super().on_init.call(this);
+        },
+        on_ready : function() {
+            ui('ztask.dmn.new').bind(this, 'g0_0');
         }
     });
 })(window.jQuery, window.NutzUI, window.NutzUtil);

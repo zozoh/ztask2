@@ -9,7 +9,9 @@ import org.nutz.mvc.Scope;
 import org.nutz.mvc.View;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Attr;
+import org.nutz.mvc.annotation.By;
 import org.nutz.mvc.annotation.Fail;
+import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
 import org.nutz.mvc.view.ServerRedirectView;
@@ -17,6 +19,7 @@ import org.nutz.usr.UErr;
 import org.nutz.usr.User;
 import org.nutz.usr.UserApi;
 import org.nutz.web.Webs;
+import org.nutz.web.ajax.AjaxCheckSession;
 
 /**
  * 提供了用户登陆，界面等诸多操作 URL
@@ -37,6 +40,7 @@ import org.nutz.web.Webs;
  * 
  * @author zozoh(zozohtnt@gmail.com)
  */
+@Filters(@By(type=AjaxCheckSession.class))
 @IocBean
 @At("/u")
 @Ok("ajax")
@@ -124,6 +128,7 @@ public class UserModule {
      *            登录的密码
      * @return 根据配置生成的重定向视图
      */
+    @Filters
     @At("/do/login")
     @Fail("jsp:web.jsp_error")
     public View do_login(@Param("nm") String loginName, @Param("pwd") String pwd, HttpSession sess) {
@@ -149,6 +154,7 @@ public class UserModule {
      * 
      * @return 根据配置生成的重定向视图
      */
+    @Filters
     @At("/do/reg")
     @Fail("jsp:web.jsp_error")
     public View do_reg(@Param("lnm") String loginName,
@@ -177,6 +183,7 @@ public class UserModule {
         return new ServerRedirectView(url_after_logout);
     }
 
+    @Filters
     @At("/register")
     @Ok("jsp:usr.register")
     @Fail("jsp:web.jsp_error")

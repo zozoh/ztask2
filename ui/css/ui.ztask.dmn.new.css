@@ -1,0 +1,57 @@
+.dmn-new {
+    width:100%;
+    height:100%;
+    overflow: hidden;
+    background: #EEE;
+    padding:20px;
+}
+
+.dmn-new-check {
+    position: absolute;
+    top:3px;
+    right:0;
+    padding:6px 8px;
+    color:#888;
+}
+
+.dmn-new-check-err {
+    color:#F00;
+}
+
+.dmn-new-input {
+    width:70%;
+    font-size:14px;
+    padding:4px 6px;
+    color:#444;
+}
+
+.dmn-new-input-err {
+    border-color:#F00;
+    background: #FCC;
+    color:#F00;
+}
+
+.dmn-new-do-off, .dmn-new-do-off:hover {
+    background-color:#AAA;
+    color:#CCC;
+}
+
+.dmn-new-title {
+    font-size:14px;
+    font-weight: bold;
+    margin:0 0 16px 0;
+    padding:6px;
+    border-bottom:1px dashed #CCC;
+}
+
+.dmn-new-tip {
+    color:#888;
+    font-size:10px;
+    padding:6px 0 20px 0;
+}
+
+.dmn-new-form {
+    position: relative;
+}
+
+

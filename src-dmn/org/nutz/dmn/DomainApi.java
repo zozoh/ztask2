@@ -23,6 +23,15 @@ public interface DomainApi extends Initializable {
     Domain fetch(String name);
 
     /**
+     * 判断一个域是否存在
+     * 
+     * @param name
+     *            域名
+     * @return 是否存在
+     */
+    boolean exists(String name);
+
+    /**
      * 获取一个用户，如果用户不存在，将抛出:
      * 
      * <pre>
@@ -125,6 +134,117 @@ public interface DomainApi extends Initializable {
     void each(String keyword, Each<Domain> callback);
 
     /**
+     * 统计域有多少关注者
+     * 
+     * @param dnm
+     *            域名
+     * @return 关注者数量
+     */
+    int countWatchers(String dnm);
+
+    /**
+     * 查询域的关注者列表
+     * 
+     * @param dnm
+     *            域名
+     * @param keyword
+     *            查询关键字，过滤关注者名称的一部分
+     * @param pn
+     *            第几页，小于等于 0 表示不分页
+     * @param pgsz
+     *            每页大小，最小不能小于 1
+     * @return 关注者列表
+     */
+    List<String> queryWatcher(String dnm, String keyword, int pn, int pgsz);
+
+    /**
+     * 为域增加一个关注者
+     * 
+     * @param d
+     *            域对象
+     * @param loginName
+     *            用户登录名
+     */
+    void addWatcher(Domain d, String loginName);
+
+    /**
+     * 为域移除一个关注者
+     * 
+     * @param d
+     *            域对象
+     * @param loginName
+     *            用户登录名
+     */
+    void removeWatcher(Domain d, String loginName);
+
+    /**
+     * @param dnm
+     *            域名
+     * @param loginName
+     *            用户登录名
+     * @return 该用户是否关注域
+     */
+    boolean isWatch(String dnm, String loginName);
+
+    /**
+     * 增加域管理员（非持久化操作）
+     * 
+     * @param dnm
+     *            域名
+     * @param loginName
+     *            用户登录名
+     */
+    Domain addAdmin(String dnm, String loginName);
+
+    /**
+     * 删除一个域管理员（非持久化操作）<br>
+     * 这个管理员将降级成为成员
+     * 
+     * @param dnm
+     *            域名
+     * @param loginName
+     *            用户登录名
+     */
+    Domain removeAdmin(String dnm, String loginName);
+
+    /**
+     * @param dnm
+     *            域名
+     * @param loginName
+     *            用户登录名
+     * @return 是否是管理员
+     */
+    boolean isAdmin(String dnm, String loginName);
+
+    /**
+     * 增加域成员（非持久化操作）
+     * 
+     * @param dnm
+     *            域名
+     * @param loginName
+     *            用户登录名
+     */
+    Domain addMemeber(String dnm, String loginName);
+
+    /**
+     * 删除一个域成员（非持久化操作）
+     * 
+     * @param dnm
+     *            域名
+     * @param loginName
+     *            用户登录名
+     */
+    Domain removeMember(String dnm, String loginName);
+
+    /**
+     * 保存一个域对象全部的信息
+     * 
+     * @param d
+     *            域对象
+     */
+    void save(Domain d);
+
+    /**
      * 更新域的某个字段的值
      * 
      * @param d
@@ -134,6 +254,6 @@ public interface DomainApi extends Initializable {
      * @param val
      *            字段值，如果值为 null，则表示删除
      */
-    void setValue(Domain u, String fnm, Object val);
+    void setValue(Domain d, String fnm, Object val);
 
 }

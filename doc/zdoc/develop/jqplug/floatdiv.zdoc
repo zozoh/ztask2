@@ -40,3 +40,11 @@ floatdiv 的使用方式
         div    : {...}     # 对应浮动的 DIV 的 jq 对象
     }
     }}}
+
+    支持的命令
+    {{{
+    # 下面的 selector 都是宿主对象
+    $(selector).floatdiv('close');   # 关闭
+    $(selector).floatdiv('helper');  # 获取 helper 对象
+    $(selector).floatdiv('dock');    # 重新定位 DIV
+    }}}

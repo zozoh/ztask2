@@ -18,13 +18,17 @@ public abstract class DErr {
     public static WebException EXISTS(String dnm) {
         return create("e.d.exists").reason(dnm);
     }
-    
+
     public static WebException INVALID_NAME(String name) {
         return create("e.d.invalid_name").reason(name);
     }
 
-    public static WebException NO_ADMIN(String dnm) {
-        return create("e.d.no.admin").reason(dnm);
+    public static WebException NOT_ADMIN(String dnm, String unm) {
+        return create("e.d.not.admin").reasonf("u(%s) @ dmn(%s)", dnm, unm);
+    }
+
+    public static WebException NOT_OWNER(String dnm, String unm) {
+        return create("e.d.not.owner").reasonf("u(%s) @ dmn(%s)", dnm, unm);
     }
 
 }

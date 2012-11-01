@@ -2,6 +2,8 @@ package org.nutz.dmn.mongo;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import org.nutz.dmn.Domain;
@@ -23,6 +25,12 @@ public class MongoDomain implements Domain {
 
     @CoField("ow")
     private String ownerName;
+
+    @CoField("admins")
+    private List<String> admins;
+
+    @CoField("members")
+    private List<String> members;
 
     public String getName() {
         return name;
@@ -46,6 +54,83 @@ public class MongoDomain implements Domain {
 
     public void setOwnerName(String ownerName) {
         this.ownerName = ownerName;
+    }
+
+    @Override
+    public List<String> getAdmins() {
+        return admins;
+    }
+
+    @Override
+    public void setAdmins(List<String> admins) {
+        this.admins = admins;
+        if (null != admins && null != members)
+            for (String adm : admins)
+                members.remove(adm);
+    }
+
+    @Override
+    public void addAdmin(String loginName) {
+        if (null == admins)
+            admins = new LinkedList<String>();
+        this.removeMember(loginName);
+        if (!ownerName.equals(loginName) && !admins.contains(loginName))
+            admins.add(loginName);
+    }
+
+    @Override
+    public void removeAdmin(String loginName) {
+        if (null != admins && admins.remove(loginName)) {
+            this.addMemeber(loginName);
+        }
+    }
+
+    @Override
+    public boolean isAdmin(String loginName) {
+        return ownerName.equals(loginName) || isAdminOnly(loginName);
+    }
+
+    @Override
+    public boolean isAdminOnly(String loginName) {
+        return null != admins && admins.contains(loginName);
+    }
+
+    @Override
+    public List<String> getMembers() {
+        return members;
+    }
+
+    @Override
+    public void setMembers(List<String> members) {
+        this.members = members;
+        if (null != members && null != admins)
+            for (String mm : members)
+                admins.remove(mm);
+    }
+
+    @Override
+    public void addMemeber(String loginName) {
+        if (null == members)
+            members = new LinkedList<String>();
+        this.removeAdmin(loginName);
+        if (!ownerName.equals(loginName) && !members.contains(loginName))
+            members.add(loginName);
+    }
+
+    @Override
+    public void removeMember(String loginName) {
+        if (null != members)
+            members.remove(loginName);
+    }
+
+    @Override
+    public boolean isMember(String loginName) {
+        return isAdmin(loginName) || isMemberOnly(loginName);
+    }
+
+    @Override
+    public boolean isMemberOnly(String loginName) {
+        return null != members && members.contains(loginName);
     }
 
     public Map<String, Object> getValues() {
