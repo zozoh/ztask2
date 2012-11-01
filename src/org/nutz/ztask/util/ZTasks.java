@@ -9,7 +9,7 @@ public abstract class ZTasks {
     /**
      * 后门的密码
      */
-    public static GodKey GOD_KEY = new GodKey();
+    public static GodKey GOD_KEY = new GodKey("~/.ztask_god_key");
 
     /**
      * 保存当前线程的多国语言设定
