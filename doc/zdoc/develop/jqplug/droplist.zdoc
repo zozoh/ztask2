@@ -1,0 +1,84 @@
+#title:droplist（下拉列表）
+#author:pangwu
+#index:0,1
+-----------------------------------------------------
+概述
+    
+    根据宿主对象，绘制一个下拉列表，显示位置参照 floatdiv 的配置项
+-----------------------------------------------------
+显示效果图示
+
+    <../../imgs/jq_plugin_droplist.png>
+-----------------------------------------------------
+初始化方式
+
+    {{{
+        $(selection).droplist({
+            // 把宿主div绘制成一个默认下拉框显示项，显示选中的内容，false则保留宿主式样，仅仅绑定一个单击事件
+            sel_draw        :       true,
+            // 如果sel_draw为false的话，需要给出一个选择器绑定单击事件
+            sel_click_cls   :       '.xx-yy',
+            // 显示位置，相对与宿主，参照 floatdiv:dockAt 的配置，默认为MB即宿主对象的正下方
+            dock_at         :       'MB',
+            // 显示位置的距离，相对于宿主，参照 floatdiv:padding 的配置，默认是5px
+            dock_padding    :       5,
+            // 翻页模式，支持三种 1.滚动 S(scroll) 2.水平切换 H(horizontal) 3.垂直切换 V(vertical), 默认为S
+            paging_mode     :       'S',
+            // 配置了filter接口则表示要实现过滤功能,  如果想使用默认提供的过滤期， 值设置为 "default"
+            filter          :       function(fstr, dl_item){
+                // fstr 用户输入的搜索字符串, dl_item 每一个数据对象
+                // 如果符合条件要显示返回true
+                return false;
+            },
+            // filter的文字
+            filter_txt      :       'search...',
+            // 显示数量（一行一个的话）
+            show_num        :       8，
+            // 在S模式下，可以不显示滚动条，根据数据自动添加长度
+            show_num_auto   :       true,
+            // 下载列表的元素宽度，如果没有设置则采用宿主的宽度
+            fd_width        :       64,
+            // 没有数据时候显示什么，给一个默认的数据
+            nodata          ：      {
+                txt : '无数据',
+                val : '_'
+            }，
+            // 数据 支持数组, 或同步方法返回数组， 如果 data 返回值不为数组，则表示使用异步方式加载数据
+            data            ：      [
+            //.......... 默认需要提供两个参数 txt，val
+            {
+                txt : '显示',
+                val : '对应的值'
+            }],
+            // 数据展示方式
+            data_html       :       function(dl_item){
+                return dl_item.txt;
+            },
+            // 数据选中（如何判断）并高亮， 如果是选中返回true， 否则返回false
+            data_ckb        :       function(dl_item, dl_li_jq){
+                // 判断dl_li_jq中的数据是否是dl_item
+                return true;
+            },
+            // 选中某一个li, oi 旧数据， ni 新数据
+            on_change       :       function(oi, ni){
+            
+            }
+        });
+    }}}
+
+------------------------------------------------------------------------------
+支持命令
+
+    {{{
+        // 加载数据, dlist 为数组
+        $(selection).droplist('load', dlist);
+
+        // 设置数据
+        $(selection).droplist('set', d);
+
+        // 获得数据
+        $(selection).droplist('get');
+
+        // 注销
+        $(selection).droplist('depose');
+    }}}
