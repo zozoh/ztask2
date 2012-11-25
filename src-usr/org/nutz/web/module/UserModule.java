@@ -40,7 +40,7 @@ import org.nutz.web.ajax.AjaxCheckSession;
  * 
  * @author zozoh(zozohtnt@gmail.com)
  */
-@Filters(@By(type=AjaxCheckSession.class))
+@Filters(@By(type = AjaxCheckSession.class, args = {Webs.ME}))
 @IocBean
 @At("/u")
 @Ok("ajax")

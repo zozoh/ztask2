@@ -64,6 +64,7 @@
     }
     # ... 命令模式 ...
     $z.ui.masker("close");          # 关闭所有的 masker 层
+    $z.ui.masker("helper");         # 获取当前 masker 的 helper 对象
     }}}
 
 

@@ -1,0 +1,155 @@
+#title:UI:浏览器(explorer)
+#author:zozoh
+#index:0,1
+-----------------------------------------------------------------
+浏览器控件的思路 
+
+    <../../imgs/ui_explorer.png>
+
+    本控件将融合下面三个控件:
+     * "bubble" : 负责地址索引
+     * "hierachy" : 负责级联滚动
+     * "objs.list" : 负责数据列表显示
+     * "objs.thumbnail" : 负责数据缩略图显示
+
+-----------------------------------------------------------------
+如何绑定
+    
+    {{{
+    ui("explorer").bind(selector, {
+        className : '自定义选择器',          # 为整个选区添加自定义选择器
+        selectable : "multi|single|none",    # 多选，单选，或者不可被选择
+                                             # 如果块的 UI 以 "objs." 开头，这个参数会传递给 UI 的选项中
+        modes : ["list", "thumbnail"],       # 显示模式，根据字符串定义切换按钮组的个数以及类选择器名
+                                             # 本 UI 提供方法 getMode() 来获得当前显示模式
+        root : {...},                        # 根节点的数据
+        # 获得数据对象的type，默认取对象的 type 字段
+        # 默认的，你可以不声明这个函数，
+        # 除非你想要在计算 id 的时候获得更快的速度
+        data_id : function(obj){
+            # this 为当前 explorer 的 bind 对象 
+            return obj.id;
+        },
+        # 获得数据对象的type，默认取对象的 type 字段
+        # 默认的，你可以不声明这个函数，
+        # 除非你想要在计算 type 的时候获得更快的速度
+        data_type : function(obj){
+             # this 为当前 explorer 的 bind 对象 
+            return obj.type;
+        },
+        data_normalize : function(obj) {     # 将一个任意的对象解析成符合控件要求的数据结构
+            # this 为当前 explorer 的 bind 对象 
+            return {
+                id   : obj.id,            # 数据的唯一标识
+                type : obj.type,          # 数据的类型
+                text : obj.text,          # 数据的显示名称
+                lm   : obj.lastModified,  # 数据的最后修改时间
+                ow   : obj.ownerName,     # 数据的所有者
+                sz   : obj.size,          # 数据的大小，单位 byte
+                className : '...'         # 数据显示的时候，特殊的类名
+                ...
+            };
+        },
+        data_ui : function(obj, callback){   # 根据当前数据对象，获取本对象对应UI对象的数据对象
+            # this 为当前 explorer 的 bind 对象 
+            $z.ajax.post(..., function(re){
+                callback(re.data);
+            });
+        },
+        data_current : function(id, callback){   # 获取当前数据详情（包括所有祖先）
+            # this 为当前 explorer 的 bind 对象 
+            $z.ajax.post(..., function(re){
+                callback(re.data);   # 数组，从根至当前
+            });
+        },
+        data_search : function(keyword, callback){  # 根据查询关键字，获取查询结果
+            # this 为当前 explorer 的 bind 对象 
+            $z.ajax.post(..., function(re){
+                callback(re.data);   # 数组，查询结果
+            });
+        },
+        do_rename : function(obj, newName, callback){  # 声明了这个选项，.objs 内的对象可以被重命名 
+            # this 为当前 explorer 的 bind 对象 
+            $z.ajax.post(..., function(re){
+                callback(obj, newName, re.data);
+            });
+        },
+        block_ui : function(obj){      # 根据数据对象获取当前区块应该绑定的 UI 类型名称
+            # this 为当前 explorer 的 bind 对象 
+            # 如果它返回一个有效的值，则表示希望 explore 给这个 UI 分配一个后续的 Block 来显示
+            # 否则如果返回 null 或者 undefined，那么 explore 将什么也不做
+            return {
+                ui : 'obj.list',  # 一个 UI 的名称
+                # 本 UI 可以对用开放什么操作，字符 '#' 和 '~' 有特殊含义
+                # '#' 表示这个项目要直接显示出来，否则将在 "更多操作" 菜单中显示
+                # '~' 表示开始一个新的分组
+                # 这两个字符可以混用
+                # 后面的 key 将从 actions 段里找到对应项目描述
+                menu : ['#new_folder', 'upload', '~remove', 'rename' ]
+            };
+        },
+        actions : {   # 保存所有本控件支持的用户行为
+            'key' : {
+                display : '::xxxxx',    # 显示字符串，参见 $z.ui.uname 对应的描述
+                func    : function(obj) {
+                    // this 为对应区块的 UI 的 bind 对象
+                    // obj 为对应 bubble 上 iid 指定的数据对象
+                }
+            }, ...
+        },
+        #--------------------------------------- 关于显示的特殊配置
+        icon : true | false,    # 是否在 bubble 或者 list 上显示图标
+        #--------------------------------------- objs.xxx 特殊配置
+        obj_click : function(obj, e, bind) {   # 当点击某个对象时
+            // this 为当前的 .objs-item 的 DOM 对象
+            // obj 表示当前被点击的对象
+            // e 为点击的事件对象
+            // bind 为当前 explorer 的 bind 对象
+        },
+        obj_actions : [                # 在每个项目上鼠标 hover 时的菜单
+            {
+                display : '::explore.obj.remove',    # 显示的文字样式
+                types   : /.*/,                      # 对应哪些类型，如果没有声明，则表示对应所有类型
+                func    : function(obj, e, bind) {   # 执行的方法
+                    // this 为当前的 .objs-funci 的 DOM 对象
+                    // obj 表示当前被点击的对象
+                    // e 为点击的事件对象
+                    // bind 为当前 explorer 的 bind 对象
+                }
+            }, ... 
+        ]
+
+    });
+    }}}
+
+-----------------------------------------------------------------
+提供的方法
+
+    * getCurrentMode : 获取当前的显示模式
+    * getCurrentData : 当前区块对应的数据对象，即 Bubble 最后一个对象
+    * getCurrentBind : 当前区块对应的 UI Bind 对象
+    * getData(id)    : 根据 ID 获取本控件缓存的数据对象，这个数据对象集合，记录在 bind 对象中
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

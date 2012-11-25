@@ -14,8 +14,10 @@
         <doc path="uis" title="UI控件">
             <doc path="usr.profile.zdoc"/>
             <doc path="usr.pwd.zdoc"/>
+            <doc path="explorer.zdoc"/>
         </doc>
         <doc path="jqplug" title="jQuery插件">
+            <doc path="dockat.zdoc"/>
             <doc path="floatdiv.zdoc"/>
             <doc path="droplist.zdoc"/>
         </doc>
