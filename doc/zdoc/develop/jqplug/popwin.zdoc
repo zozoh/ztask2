@@ -1,0 +1,36 @@
+#title:弹出窗口
+#author:lina,pw
+#index:0,1
+--------------------------------------------------
+概述
+
+    popwin(pop window)基于poppos控件, 提供设置显示样式与消失方式的接口
+
+--------------------------------------------------
+使用方式
+
+    {{{
+        // 返回结果是popwin的jq对象, 方便用户自定义操作
+        var pp = $(selector).popwin({
+            'width': 100,                                           // 必填
+            'height': 200,                                          // 必填
+            'pos': 'center',                                        // 选填, 查看poppos控件, 选填, 默认是center
+            'effect': 'fadein',                                     // 选填, 默认是fadein
+            'duration': 200,                                        // 选填, 持续时间,默认是200ms
+            'childFunc': function() {                               // 必填
+                // 返回子元素html的jq包装对象
+                var html = '';
+                html += '<div class="child-div">haha</div>';
+                return $(html);
+            },                     
+            'fadeFunc': function(pp) {                              // 选填
+                // pp是popwin的jq对象, 一般用来绑定消失方式
+                // 例如, 显示三秒后自动消失
+                setTimeout(function(){
+                    pp.fadeOut(function(){
+                         pp.remove();
+                    })
+                }, 3000);
+            }
+        });
+    }}}

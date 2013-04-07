@@ -20,6 +20,8 @@
             <doc path="dockat.zdoc"/>
             <doc path="floatdiv.zdoc"/>
             <doc path="droplist.zdoc"/>
+            <doc path="poppos.zdoc"/>
+            <doc path="popwin.zdoc"/>
         </doc>
     </doc>
 </doc>
